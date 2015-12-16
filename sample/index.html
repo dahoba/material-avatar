@@ -1,77 +1,84 @@
 <!doctype html>
 <html lang="en">
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Material Avatar</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Material Avatar</title>
 
-  <link rel="stylesheet" href="styles.css">
-
-  <div class="row">
-    <div class="col">
-      <div class="md-avatar-circle">
-        M A
-      </div>
-    </div>
-    <div class="col">
-      <div class="md-avatar-circle">
-        T
-      </div>
-    </div>
-    <div class="col">
-      <div class="md-avatar-circle">
-        E R
-      </div>
-    </div>
-    <div class="col">
-      <div class="md-avatar">
-        I
-      </div>
-    </div>
-    <div class="col">
-      <div class="md-avatar-circle">
-        A L
-      </div>
+<link rel="stylesheet" href="styles.css">
+<link href='https://fonts.googleapis.com/css?family=Kanit&subset=thai,latin&effect=canvas-print' rel='stylesheet' type='text/css'>
+<div class="row">
+  <div class="col">
+    <div id="avatar">
+      ธงชัย มค
     </div>
   </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="md-avatar">
-        A
-      </div>
-    </div>
-    <div class="col">
-      <div class="md-avatar-circle">
-        V
-      </div>
-    </div>
-    <div class="col">
-      <div id="avatar">
-        A T
-      </div>
-    </div>
-    <div class="col">
-      <div class="md-avatar-circle">
-        A
-      </div>
-    </div>
-    <div class="col">
-      <div id="custom">
-        R
-      </div>
+  <div class="col">
+    <div class="md-avatar-circle">
+      T
     </div>
   </div>
+  <div class="col">
+    <div class="md-avatar-circle">
+      E R
+    </div>
+  </div>
+  <div class="col">
+    <div class="md-avatar">
+      I
+    </div>
+  </div>
+  <div class="col">
+    <div class="md-avatar-circle">
+      A L
+    </div>
+  </div>
+</div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-  <script src="randomcolor/randomColor.js"></script>
-  <script src="material-avatar.js"></script>
-  <script defer async>
-    MaterialAvatar(document.getElementsByClassName('md-avatar-circle'), {shape: 'circle'});
+<div class="row">
+  <div class="col">
+    <div class="md-avatar">
+      A
+    </div>
+  </div>
+  <div class="col">
+    <div class="md-avatar-circle">
+      V
+    </div>
+  </div>
+  <div class="col">
+    <div id="avatar">
+      A T
+    </div>
+  </div>
+  <div class="col">
+    <div class="md-avatar-circle">
+      A
+    </div>
+  </div>
+  <div class="col">
+    <div id="custom">
+      R
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="randomcolor/randomColor.js"></script>
+<script src="material-avatar.js"></script>
+<script defer async>
+  MaterialAvatar(document.getElementsByClassName('md-avatar-circle'), {shape: 'circle',type:'img'});
     MaterialAvatar(document.getElementsByClassName('md-avatar'), {randomColor: {hue: 'orange'}});
-    MaterialAvatar(document.getElementById('avatar'));
+    MaterialAvatar(document.getElementById('avatar'),{randomColor: {hue: 'orange'},shape: 'circle',fontFamily:'Kanit',type:'img'});
     $('#custom').materialAvatar({backgroundColor: '#f12a27', textColor: '#777'});
-  </script>
+</script>
+<script>
+  function extractImages(){
+      $('.md-avatar-circle img').each(function(idx,element){
+        console.log(element.src);
+      });
+    }
+</script>
 
 </html>
