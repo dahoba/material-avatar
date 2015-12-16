@@ -16,7 +16,7 @@ Material-Avatar uses HTML5 Canvas to fill an element with a random(ized) backgro
 
 > __Now Supports jQuery!__
 
-### Useage
+### Usage
 
 1. Install using __npm__, __bower__, or __download__.
     ```bash
@@ -40,7 +40,8 @@ Material-Avatar uses HTML5 Canvas to fill an element with a random(ized) backgro
 3. Call __MaterialAvatar__ in somewhere on your page.
     ```html
     <script>
-      MaterialAvatar(document.getElementsByClass('default-profile-photo'), options);
+    var options = {shape: 'circle'};
+      MaterialAvatar(document.getElementsByClassName('default-profile-photo'), options);
 
       //or use jQuery
 
@@ -87,6 +88,9 @@ A string of characters used as the initials for the avatar.
 9. __name__ _(string)_ <br/>
 In addition to being able to use the data-name attribute, or the innerHtml of an element, you can also pass
 a name in the options, which will be broken down into the initial.
+
+10. __type__ _(string)_ <br/>
+"img" or "canvas" (default); use 'img' to generate avatar in an 'img' tag, png file.
 
 [see sample](https://github.com/hellsan631/material-avatar/tree/master/sample) or [the live website](http://hellsan631.github.io/material-avatar/) for some examples.
 
