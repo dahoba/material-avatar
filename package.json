@@ -33,7 +33,11 @@
     "post-install": "bower install"
   },
   "devDependencies": {
-    "randomcolor": "~0.4.0"
+    "randomcolor": "~0.4.0",
+    "gulp-concat":"",
+    "gulp-plumber":"",
+    "gulp-uglify":"",
+    "gulp-webserver":""
   },
   "authors": [
     "Mathew Kleppin <mathew.kleppin@gmail.com>"

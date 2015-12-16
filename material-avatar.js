@@ -1,4 +1,4 @@
-;(function(win, doc) {
+; (function (win, doc) {
 
   /**
    * Main function to create material avatars
@@ -7,7 +7,7 @@
   function MaterialAvatar(elements, options) {
 
     if (!elements) {
-      throw(new Error('No elements selected/found'));
+      throw (new Error('No elements selected/found'));
     }
 
     this.options = {
@@ -20,7 +20,8 @@
         '#d35400', '#c0392b', '#bdc3c7',
         '#7f8c8d'
       ],
-      fontFamily: 'Arial'
+      fontFamily: 'Arail',
+      type: 'canvas'
     };
 
     this.name = 'MaterialAvatar';
@@ -34,7 +35,7 @@
       //Turn our HTMLCollection into an array so we can iterate through it.
       this.elements = [].slice.call(this.elements);
 
-      this.elements.forEach(function(element){
+      this.elements.forEach(function (element) {
         element.avatar = new Avatar(element, _this.options);
       });
     } else {
@@ -42,14 +43,14 @@
     }
   }
 
-  MaterialAvatar.prototype.updateOptions = function(options) {
+  MaterialAvatar.prototype.updateOptions = function (options) {
     var _this = this;
 
     if (options) {
       this.options = options;
     }
 
-    this.elements.forEach(function(element){
+    this.elements.forEach(function (element) {
       element.avatar.options = _this.options;
     });
   };
@@ -57,23 +58,23 @@
   function Avatar(element, options) {
 
     if (!element) {
-      throw(new Error('No element selected/found'));
+      throw (new Error('No element selected/found'));
     }
 
     var _this = this;
-    this.element  = element;
-    this.options  = options;
-    this.canvas   = doc.createElement('canvas');
+    this.element = element;
+    this.options = options;
+    this.canvas = doc.createElement('canvas');
 
     //Push our reflows to a new animation frame.
-    requestAnimationFrame(function() {
+    requestAnimationFrame(function () {
       return _this.init();
     });
   }
 
-  Avatar.prototype.init = function(){
-    this.width   = parseInt(this.element.offsetWidth, 10);
-    this.height  = parseInt(this.element.offsetHeight, 10);
+  Avatar.prototype.init = function () {
+    this.width = parseInt(this.element.offsetWidth, 10);
+    this.height = parseInt(this.element.offsetHeight, 10);
 
     this.canvas.setAttribute('width', this.width);
     this.canvas.setAttribute('height', this.width);
@@ -81,20 +82,37 @@
     this.initials = this.getInitials();
     this.fontSize = this.getFontSize();
 
-    this.render();
+    if (this.options.type === 'img') {
+      this.renderImg();
+    } else {
+      this.renderCanvas();
+    }
   };
+  
+  /* render and insert a png image */
+  Avatar.prototype.renderImg = function () {
+    this.element.innerHTML = '';
+    var avatarImg = document.createElement('img');
+    avatarImg.src = this.render().toDataURL();
+    this.element.appendChild(avatarImg);
+  }
+  /* render and insert a canvas, the original */
+  Avatar.prototype.renderCanvas = function () {
+    this.element.innerHTML = '';
+    this.element.appendChild(this.render());
+  }
 
-  Avatar.prototype.render = function() {
-    this.backgroundColor  = this.generateColor(this.initials.charCodeAt(0) - 65);
-    this.context          = this.canvas.getContext('2d');
+  Avatar.prototype.render = function () {
+    this.backgroundColor = this.generateColor(this.initials.charCodeAt(0) - 65);
+    this.context = this.canvas.getContext('2d');
 
     //Create our font styles
-    this.context.font       = this.fontSize + 'px/0px ' + this.options.fontFamily;
-    this.context.textAlign  = 'center';
+    this.context.font = this.fontSize + 'px/0px ' + this.options.fontFamily;
+    this.context.textAlign = 'center';
 
     //Decide what type of shape we should draw for the background
     if (this.options) {
-      if(this.options.shape === 'circle') {
+      if (this.options.shape === 'circle') {
         this._drawCircle();
       } else {
         this._drawSquare();
@@ -104,44 +122,43 @@
     }
 
     //Create the color and add our initials
-    this.context.fillStyle  = this.getTextColor();
+    this.context.fillStyle = this.getTextColor();
     this.context.fillText(
       this.initials,
-      this.width/2,
-      (this.height / 2) + ((this.fontSize*0.68)/2)
-    );
+      this.width / 2,
+      (this.height / 2) + ((this.fontSize * 0.68) / 2)
+      );
 
-    //Remove the inner text and swap in the canvas elemnt
-    this.element.innerHTML  = '';
-    this.element.appendChild(this.canvas);
+    return this.canvas;
   };
 
   //Creates circle background area
-  Avatar.prototype._drawCircle = function() {
-    var centerX = this.width  / 2;
+  Avatar.prototype._drawCircle = function () {
+    var centerX = this.width / 2;
     var centerY = this.height / 2;
-    var radius  = this.width  / 2;
+    var radius = this.width / 2;
 
     this.context.beginPath();
     this.context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-    this.context.fillStyle  = this.backgroundColor;
+    this.context.fillStyle = this.backgroundColor;
     this.context.fill();
   };
 
   //Creates square background area
-  Avatar.prototype._drawSquare = function() {
-    this.context.fillStyle  = this.backgroundColor;
+  Avatar.prototype._drawSquare = function () {
+    this.context.fillStyle = this.backgroundColor;
     this.context.fillRect(0, 0, this.width, this.height);
   };
-
+  
+  //Try to make the initials from inner text
   Avatar.prototype.getInitials = function () {
 
     if (this.options.initials) {
       return this.options.initials;
     }
 
-    this.name       = this.options.name || this.element.getAttribute('data-name') || this.element.innerHTML.trim();
-    var _nameSplit  = this.name.split(' ');
+    this.name = this.options.name || this.element.getAttribute('data-name') || this.element.innerHTML.trim();
+    var _nameSplit = this.name.split(' ');
     var _initials;
 
     this.element.setAttribute('data-name', this.name);
@@ -158,14 +175,14 @@
 
   Avatar.prototype.getFontSize = function () {
     if (this.options.fontSize) {
-      if(typeof this.options.fontSize === 'function') {
+      if (typeof this.options.fontSize === 'function') {
         return this.options.fontSize(this.height, this.initials.length);
       }
 
       return this.options.fontSize;
     }
 
-    var _fontSize = this.height/((this.initials.length*0.5) + 1);
+    var _fontSize = this.height / ((this.initials.length * 0.5) + 1);
 
     return _fontSize;
   };
@@ -177,21 +194,21 @@
       return this.options.textColor;
     }
 
-    var _hexColor   = this._hexToRgb(this.backgroundColor);
+    var _hexColor = this._hexToRgb(this.backgroundColor);
 
     //Optional fallback incase our function returns null
     if (!_hexColor) return '#222';
 
     var _colorValue = (_hexColor.r * 299) + (_hexColor.g * 587) + (_hexColor.b * 114);
 
-    return (Math.round(_colorValue/1000) > 125) ? '#222' : '#fff';
+    return (Math.round(_colorValue / 1000) > 125) ? '#222' : '#fff';
   };
 
   Avatar.prototype._hexToRgb = function (hex) {
     var _result;
 
     // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-    hex = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function(m, r, g, b) {
+    hex = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function (m, r, g, b) {
       return r + r + g + g + b + b;
     });
 
@@ -227,11 +244,11 @@
   };
 
   // export
-  win.MaterialAvatar  = MaterialAvatar;
+  win.MaterialAvatar = MaterialAvatar;
 
   if (jQuery && jQuery.fn) {
-    jQuery.fn.materialAvatar = function(options) {
-      return this.each(function() {
+    jQuery.fn.materialAvatar = function (options) {
+      return this.each(function () {
         if (!jQuery.data(this, 'plugin_materialAvatar')) {
           jQuery.data(this, 'plugin_materialAvatar', new MaterialAvatar(this, options));
         }
@@ -239,10 +256,10 @@
     };
   }
 
-  Object.prototype.extend = function(obj) {
+  Object.prototype.extend = function (obj) {
     for (var i in obj) {
       if (obj.hasOwnProperty(i)) {
-         this[i] = obj[i];
+        this[i] = obj[i];
       }
     }
   };
